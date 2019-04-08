@@ -15,4 +15,8 @@ defmodule SimpleBankApiWeb.UserView do
       name: user.name,
       account: user.account}
   end
+
+  def render("jwt.json", %{jwt: jwt}) do
+    %{jwt: jwt}
+  end
 end

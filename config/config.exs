@@ -10,6 +10,11 @@ use Mix.Config
 config :simple_bank_api,
   ecto_repos: [SimpleBankApi.Repo]
 
+# Guardian config
+config :simple_bank_api, SimpleBankApi.Guardian,
+       issuer: "SimpleBankApi",
+       secret_key: "WhEiOu+GWegC/SgOs4KSuHnyjl5mGPN3F5cJtaB4i+nGLwqiWR94SrJEkBacwG6E"
+
 # Configures the endpoint
 config :simple_bank_api, SimpleBankApiWeb.Endpoint,
   url: [host: "localhost"],
