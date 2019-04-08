@@ -17,7 +17,20 @@ defmodule SimpleBankApi.Accounts do
   ## Examples
 
       iex> list_users()
-      [%User{}, ...]
+      [
+        %SimpleBankApi.Accounts.User{
+          __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+          account: "51VO9EIR",
+          email: "foo@bar.com",
+          id: 1,
+          inserted_at: ~N[2019-04-08 16:05:57],
+          name: "foo",
+          password: nil,
+          password_confirmation: nil,
+          password_hash: "$2b$12$XVyeEe.jaXFpHOaADi.kn.Tj2BKAhTZHTy6hVAIGTLuMrQfHksy/G",
+          updated_at: ~N[2019-04-08 16:05:57]
+        }
+      ]
 
   """
   def list_users do
@@ -31,11 +44,19 @@ defmodule SimpleBankApi.Accounts do
 
   ## Examples
 
-      iex> get_user!(123)
-      %User{}
-
-      iex> get_user!(456)
-      ** (Ecto.NoResultsError)
+      iex> get_user!(1)
+      %SimpleBankApi.Accounts.User{
+        __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+        account: "51VO9EIR",
+        email: "foo@bar.com",
+        id: 1,
+        inserted_at: ~N[2019-04-08 16:05:57],
+        name: "foo",
+        password: nil,
+        password_confirmation: nil,
+        password_hash: "$2b$12$XVyeEe.jaXFpHOaADi.kn.Tj2BKAhTZHTy6hVAIGTLuMrQfHksy/G",
+        updated_at: ~N[2019-04-08 16:05:57]
+      }
 
   """
   def get_user!(id), do: Repo.get!(User, id)
@@ -45,11 +66,20 @@ defmodule SimpleBankApi.Accounts do
 
   ## Examples
 
-      iex> create_user(%{field: value})
-      {:ok, %User{}}
-
-      iex> create_user(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> SimpleBankApi.Accounts.create_user(%{name: "foo", email: "foo@bar.com", password: "somePassword", password_confirmation: "somePassword"})
+      {:ok,
+     %SimpleBankApi.Accounts.User{
+       __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+       account: "51VO9EIR",
+       email: "foo@bar.com",
+       id: 12,
+       inserted_at: ~N[2019-04-08 16:05:57],
+       name: "foo",
+       password: "somePassword",
+       password_confirmation: "somePassword",
+       password_hash: "$2b$12$XVyeEe.jaXFpHOaADi.kn.Tj2BKAhTZHTy6hVAIGTLuMrQfHksy/G",
+       updated_at: ~N[2019-04-08 16:05:57]
+     }}
 
   """
   def create_user(attrs \\ %{}) do
@@ -59,52 +89,25 @@ defmodule SimpleBankApi.Accounts do
   end
 
   @doc """
-  Updates a user.
+  Sign in token a user using email and password.
 
   ## Examples
 
-      iex> update_user(user, %{field: new_value})
-      {:ok, %User{}}
-
-      iex> update_user(user, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a User.
-
-  ## Examples
-
-      iex> delete_user(user)
-      {:ok, %User{}}
-
-      iex> delete_user(user)
-      {:error, %Ecto.Changeset{}}
+     iex> SimpleBankApi.Accounts.token_sign_in("foo@bar.com", "somePassword")
+     {:ok,
+     "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJTaW1wbGVCYW5rQXBpIiwiZXhwIjoxNTU3MTU4MjU3LCJpYXQiOjE1NTQ3MzkwNTcsImlzcyI6IlNpbXBsZUJhbmtBcGkiLCJqdGkiOiJhZWE3ODUxYy00YjM0LTQxNTEtYjJlMi02MWJiYTM5OWM1ZjkiLCJuYmYiOjE1NTQ3MzkwNTYsInN1YiI6IjEiLCJ0eXAiOiJhY2Nlc3MifQ.mZaM3Nt7mpCPaqk_AdVGMaQ1_1ZarxEz4FOVcUopk5aqzJSQL_8YKOtcap79HRF05vOWbm0eYwtIEcUTHx5WGA",
+     %{
+       "aud" => "SimpleBankApi",
+       "exp" => 1557158257,
+       "iat" => 1554739057,
+       "iss" => "SimpleBankApi",
+       "jti" => "aea7851c-4b34-4151-b2e2-61bba399c5f9",
+       "nbf" => 1554739056,
+       "sub" => "1",
+       "typ" => "access"
+     }}
 
   """
-  def delete_user(%User{} = user) do
-    Repo.delete(user)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking user changes.
-
-  ## Examples
-
-      iex> change_user(user)
-      %Ecto.Changeset{source: %User{}}
-
-  """
-  def change_user(%User{} = user) do
-    User.changeset(user, %{})
-  end
-
   def token_sign_in(email, password) do
     case email_password_auth(email, password) do
       {:ok, user} ->
@@ -114,6 +117,27 @@ defmodule SimpleBankApi.Accounts do
     end
   end
 
+  @doc """
+  Sign in user using email and password.
+
+  ## Examples
+
+     iex> SimpleBankApi.Accounts.email_password_auth("foo@bar.com", "somePassword")
+     {:ok,
+     %SimpleBankApi.Accounts.User{
+       __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+       account: nil,
+       email: "foo@bar.com",
+       id: 1,
+       inserted_at: ~N[2019-04-08 14:15:18],
+       name: "foo",
+       password: nil,
+       password_confirmation: nil,
+       password_hash: "$2b$12$VnPubXY3mrO0X1eW4O.hCuKdt6Xw5VBvL3G3afn1yj25xxOYU0OQ6",
+       updated_at: ~N[2019-04-08 14:15:18]
+     }}
+
+  """
   def email_password_auth(email, password) when is_binary(email) and is_binary(password) do
     with {:ok, user} <- get_by_email(email),
     do: verify_password(password, user)
