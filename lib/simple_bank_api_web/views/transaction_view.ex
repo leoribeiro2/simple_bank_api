@@ -13,9 +13,15 @@ defmodule SimpleBankApiWeb.TransactionView do
     }
   end
 
-  def render("transaction.json", %{transaction: transaction}, account) do
+  def render("transactions.json", %{balance: balance, transactions: transactions}) do
+    %{
+      balance: balance,
+      transations: render_many(transactions, TransactionView, "transaction.json")
+    }
+  end
+
+  def render("transaction.json", %{transaction: transaction}) do
     %{id: transaction.id,
-      account: account,
       history: transaction.history,
       date: transaction.date,
       amount: transaction.amount}

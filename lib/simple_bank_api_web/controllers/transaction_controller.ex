@@ -2,7 +2,6 @@ defmodule SimpleBankApiWeb.TransactionController do
   use SimpleBankApiWeb, :controller
 
   alias SimpleBankApi.Bank
-  ## alias SimpleBankApi.Bank.Transaction
   alias SimpleBankApi.Guardian
   alias SimpleBankApi.Accounts
 
@@ -28,8 +27,11 @@ defmodule SimpleBankApiWeb.TransactionController do
       end
   end
 
-  def show(conn, %{"id" => id}) do
-    transaction = Bank.get_transaction!(id)
-    render(conn, "show.json", transaction: transaction)
+  def transactions(conn, _params) do
+    user = Guardian.Plug.current_resource(conn)
+    balance = Bank.get_balance(user.id)
+    transactions = Bank.get_transactions_by_user_id(user.id)
+    conn
+    |> render("transactions.json", %{balance: balance, transactions: transactions})
   end
 end
