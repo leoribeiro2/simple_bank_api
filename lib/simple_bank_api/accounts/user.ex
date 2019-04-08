@@ -28,13 +28,22 @@ defmodule SimpleBankApi.Accounts.User do
     |> unique_constraint(:email)
     # Add put_password_hash to changeset pipeline
     |> put_password_hash
+    |> create_account
+  end
+
+  defp create_account(changeset) do
+    case changeset do
+       %Ecto.Changeset{valid?: true} ->
+         put_change(changeset, :account, to_string(Integer.to_string(:rand.uniform(:os.system_time(:millisecond)), 32)))
+       _ ->
+        changeset
+    end
   end
 
   defp put_password_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
         put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(pass))
-
       _ ->
         changeset
     end

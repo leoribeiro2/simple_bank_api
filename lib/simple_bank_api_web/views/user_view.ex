@@ -11,10 +11,8 @@ defmodule SimpleBankApiWeb.UserView do
   end
 
   def render("user.json", %{user: user}) do
-    %{id: user.id,
-      email: user.email,
+    %{email: user.email,
       name: user.name,
-      account: user.account,
-      password_hash: user.password_hash}
+      account: user.account}
   end
 end
