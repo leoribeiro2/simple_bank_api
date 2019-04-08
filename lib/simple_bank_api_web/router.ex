@@ -24,5 +24,6 @@ defmodule SimpleBankApiWeb.Router do
     get "/contacts", UserController, :index
     get "/me", UserController, :show
     post "/bank/transfer", TransactionController, :transfer
+    get "/bank/transactions", TransactionController, :transactions
   end
 end

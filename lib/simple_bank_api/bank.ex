@@ -65,6 +65,16 @@ defmodule SimpleBankApi.Bank do
     end
   end
 
+  def get_transactions_by_user_id(user_id) do
+    query = query = from t in Transaction, where: t.user_id == ^user_id
+    case Repo.all(query) do
+      nil ->
+        {:error, "Not Found"}
+      transations ->
+        transations
+    end
+  end
+
   def transfer(%{from_user: from_user, to_user: to_user, amount: amount}) do
     balance = get_balance(from_user.id)
     if balance >= amount do
