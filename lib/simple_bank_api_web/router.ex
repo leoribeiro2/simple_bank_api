@@ -21,6 +21,7 @@ defmodule SimpleBankApiWeb.Router do
   scope "/api/v1", SimpleBankApiWeb do
     pipe_through [:api, :jwt_authenticated]
 
+    get "/contacts", UserController, :index
     get "/me", UserController, :show
   end
 end
