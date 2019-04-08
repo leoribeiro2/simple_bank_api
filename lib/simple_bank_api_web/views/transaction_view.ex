@@ -6,8 +6,11 @@ defmodule SimpleBankApiWeb.TransactionView do
     %{data: render_many(transations, TransactionView, "transaction.json")}
   end
 
-  def render("show.json", %{transaction: transaction}) do
-    %{data: render_one(transaction, TransactionView, "transaction.json")}
+  def render("transfer.json", %{to_name: to_name, amount: amount}) do
+    %{
+      sucess: true,
+      message: "Transfer of #{amount} to #{to_name} performed successfully"
+    }
   end
 
   def render("transaction.json", %{transaction: transaction}, account) do

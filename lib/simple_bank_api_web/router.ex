@@ -22,5 +22,6 @@ defmodule SimpleBankApiWeb.Router do
     pipe_through [:api, :jwt_authenticated]
 
     get "/me", UserController, :show
+    post "/bank/transfer", TransactionController, :transfer
   end
 end

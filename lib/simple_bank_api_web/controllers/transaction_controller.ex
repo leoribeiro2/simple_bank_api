@@ -2,7 +2,9 @@ defmodule SimpleBankApiWeb.TransactionController do
   use SimpleBankApiWeb, :controller
 
   alias SimpleBankApi.Bank
-  alias SimpleBankApi.Bank.Transaction
+  ## alias SimpleBankApi.Bank.Transaction
+  alias SimpleBankApi.Guardian
+  alias SimpleBankApi.Accounts
 
   action_fallback SimpleBankApiWeb.FallbackController
 
@@ -11,12 +13,19 @@ defmodule SimpleBankApiWeb.TransactionController do
     render(conn, "index.json", transations: transations)
   end
 
-  def create(conn, %{"transaction" => transaction_params}) do
-    with {:ok, %Transaction{} = transaction} <- Bank.create_transaction(transaction_params) do
-      conn
-      |> put_status(:created)
-      |> render("show.json", transaction: transaction)
-    end
+  def transfer(conn, %{"to" => to, "amount" => amount}) do
+    case Bank.transfer(%{
+      from_user: Guardian.Plug.current_resource(conn),
+      to_user: Accounts.get_by_account(to),
+      amount: amount
+    }) do
+      {:ok, transfer} ->
+        conn
+        |> put_status(:created)
+        |> render("transfer.json", transfer)
+      {:error, reason} ->
+        {:error, :bad_request, reason: reason}
+      end
   end
 
   def show(conn, %{"id" => id}) do
