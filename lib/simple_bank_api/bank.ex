@@ -7,36 +7,6 @@ defmodule SimpleBankApi.Bank do
   alias SimpleBankApi.Repo
 
   alias SimpleBankApi.Bank.Transaction
-
-  @doc """
-  Returns the list of transations.
-
-  ## Examples
-
-      iex> list_transations()
-      [%Transaction{}, ...]
-
-  """
-  def list_transations do
-    Repo.all(Transaction)
-  end
-
-  @doc """
-  Gets a single transaction.
-
-  Raises `Ecto.NoResultsError` if the Transaction does not exist.
-
-  ## Examples
-
-      iex> get_transaction!(123)
-      %Transaction{}
-
-      iex> get_transaction!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_transaction!(id), do: Repo.get!(Transaction, id)
-
   @doc """
   Creates a transaction.
 
@@ -90,9 +60,14 @@ defmodule SimpleBankApi.Bank do
         date: DateTime.utc_now,
         amount: amount
       })
+      send_transaction_email(from_user)
       {:ok, %{to_name: to_user.name, amount: amount}}
     else
       {:error, "Not have funds"}
     end
+  end
+
+  defp send_transaction_email(user) do
+    # TODO: implments send mail here
   end
 end
