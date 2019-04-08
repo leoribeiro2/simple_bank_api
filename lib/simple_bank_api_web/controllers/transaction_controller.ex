@@ -7,11 +7,6 @@ defmodule SimpleBankApiWeb.TransactionController do
 
   action_fallback SimpleBankApiWeb.FallbackController
 
-  def index(conn, _params) do
-    transations = Bank.list_transations()
-    render(conn, "index.json", transations: transations)
-  end
-
   def transfer(conn, %{"to" => to, "amount" => amount}) do
     case Bank.transfer(%{
       from_user: Guardian.Plug.current_resource(conn),
