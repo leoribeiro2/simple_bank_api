@@ -38,8 +38,6 @@ defmodule SimpleBankApiWeb.UserControllerTest do
       fixture(:user)
       conn = post(conn, Routes.user_path(conn, :sign_in), @valid_auth_attrs)
       assert json_response(conn, 200) != %{}
-      token = json_response(conn, 200)["token"]
-      IO.puts(token)
     end
 
   end
