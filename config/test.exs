@@ -11,8 +11,8 @@ config :logger, level: :warn
 
 # Configure your database
 config :simple_bank_api, SimpleBankApi.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "user",
+  password: "senha123",
   database: "simple_bank_api_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
