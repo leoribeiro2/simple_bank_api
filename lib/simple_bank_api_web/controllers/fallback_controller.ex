@@ -12,6 +12,12 @@ defmodule SimpleBankApiWeb.FallbackController do
     |> json(%{error: "Login error"})
   end
 
+  def call(conn, {:error, :bad_request, reason: reason}) do
+    conn
+    |> put_status(:bad_request)
+    |> json(%{error: reason})
+  end
+
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)

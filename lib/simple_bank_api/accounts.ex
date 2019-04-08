@@ -160,4 +160,13 @@ defmodule SimpleBankApi.Accounts do
       {:error, :invalid_password}
     end
   end
+
+  def get_by_account(account) do
+    case Repo.get_by(User, account: account) do
+      nil ->
+        {:error, "Not Found"}
+      user ->
+        user
+    end
+  end
 end
