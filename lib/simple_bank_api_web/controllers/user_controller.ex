@@ -4,6 +4,7 @@ defmodule SimpleBankApiWeb.UserController do
   alias SimpleBankApi.Accounts
   alias SimpleBankApi.Accounts.User
   alias SimpleBankApi.Guardian
+  alias SimpleBankApi.Bank
 
   action_fallback SimpleBankApiWeb.FallbackController
 
@@ -24,6 +25,12 @@ defmodule SimpleBankApiWeb.UserController do
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Accounts.create_user(user_params),
          {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
+      Bank.create_transaction(%{
+        user_id: user.id,
+        history: "Bonus for registering",
+        date: DateTime.utc_now,
+        amount: 1000
+      })
       conn
       |> put_status(:created)
       |> render("jwt.json", jwt: token)
