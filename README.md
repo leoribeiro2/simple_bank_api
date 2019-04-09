@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/leoribeirowebmaster/simple_bank_api/tree/develop.svg?style=svg)](https://circleci.com/gh/leoribeirowebmaster/simple_bank_api/tree/develop)
 
-Simple banking project where it is possible to subscribe and make transfers to other users.
+Simple banking project where it is possible to register and make transfers to other users.
 
 ## Getting Started
 
