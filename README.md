@@ -1,19 +1,60 @@
-# SimpleBankApi
+# Simple Bank API
 
-To start your Phoenix server:
+Simple banking project where it is possible to subscribe and make transfers to other users.
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Start Phoenix endpoint with `mix phx.server`
+## Getting Started
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+### Prerequisites
 
-## Learn more
+* Elixir >1.5
+* Elang >20
+* Postgres
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+### Installing
+
+```
+git clone https://github.com/leoribeirowebmaster/simple_bank_api.git
+cd simple_bank_api
+```
+
+Update postgres connection on config/dev.exs
+```
+config :simple_bank_api, SimpleBankApi.Repo,
+  username: "",
+  password: "",
+  database: "",
+  hostname: "",
+  pool_size: 10
+```
+
+```bash
+mix local.hex --force && mix local.rebar --force
+mix deps.get
+mix ecto.create #create database
+mix ecto.migrate #create tables
+```
+
+### Running development
+
+```
+mix phx.server
+```
+
+The server is running on https://localhost:4000
+
+## Running the tests
+
+```
+mix test
+```
+
+## Deployment
+
+This project is implemented CI / CD using [circleci](https://circleci.com/), at each commit the code is tested, when the merge for the branch release is made a deploy to the production environment: https://simple-bank-api.herokuapp.com/
+
+## Built With
+
+* [Elixir](https://elixir-lang.org/) - Elixir is a dynamic, functional language designed for building scalable and maintainable applications.
+* [Phoenix](https://phoenixframework.org/) - A productive web framework that does not compromise speed or maintainability.
