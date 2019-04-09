@@ -36,7 +36,7 @@ defmodule SimpleBankApi.Bank do
   end
 
   def get_transactions_by_user_id(user_id) do
-    query = query = from t in Transaction, where: t.user_id == ^user_id
+    query = from t in Transaction, where: t.user_id == ^user_id
     case Repo.all(query) do
       nil ->
         {:error, "Not Found"}
@@ -69,5 +69,18 @@ defmodule SimpleBankApi.Bank do
 
   defp send_transaction_email(user) do
     # TODO: implments send mail here
+  end
+
+  def totals do
+    now = NaiveDateTime.utc_now
+    total_day_query = from t in Transaction, where: t.date == ^now, select: sum(t.amount)
+    total_day = Repo.one(total_day_query)
+    total_month_query = from t in Transaction, where: t.date > ^%Date{day: 1, month: now.month, year: now.year}, select: sum(t.amount)
+    total_month = Repo.one(total_month_query)
+    total_year_query = from t in Transaction, where: t.date > ^%Date{day: 1, month: 1, year: now.year}, select: sum(t.amount)
+    total_year = Repo.one(total_year_query)
+    grand_total_query = from t in Transaction, select: sum(t.amount)
+    grand_total = Repo.one(grand_total_query)
+    %{total_day: total_day, total_month: total_month, total_year: total_year, grand_total: grand_total}
   end
 end
