@@ -29,4 +29,10 @@ defmodule SimpleBankApiWeb.TransactionController do
     conn
     |> render("transactions.json", %{balance: balance, transactions: transactions})
   end
+
+  def backoffice(conn, _params) do
+    totals = Bank.totals
+    conn
+    |> render("totals.json", totals)
+  end
 end

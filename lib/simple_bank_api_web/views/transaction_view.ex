@@ -13,6 +13,10 @@ defmodule SimpleBankApiWeb.TransactionView do
     }
   end
 
+  def render("totals.json", %{total_day: total_day, total_month: total_month, total_year: total_year, grand_total: grand_total}) do
+    %{total_day: total_day, total_month: total_month, total_year: total_year, grand_total: grand_total}
+  end
+
   def render("transactions.json", %{balance: balance, transactions: transactions}) do
     %{
       balance: balance,
