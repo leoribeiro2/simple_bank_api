@@ -10,9 +10,11 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :simple_bank_api, SimpleBankApiWeb.Endpoint,
-  http: [:inet6, port: System.get_env("PORT") || 4000],
-  url: [host: "example.com", port: 80],
+  http: [port: System.get_env("PORT")],
+  url: [scheme: "https", host: "simple-bank-api.herokuapp.com", port: 443],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json"
+
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -66,6 +68,12 @@ config :logger, level: :info
 # Note you can't rely on `System.get_env/1` when using releases.
 # See the releases documentation accordingly.
 
-# Finally import the config/prod.secret.exs which should be versioned
-# separately.
-import_config "prod.secret.exs"
+# Guardian config
+config :simple_bank_api, SimpleBankApi.Guardian,
+       issuer: "SimpleBankApi",
+       secret_key: System.get_env("SECRET")
+
+# Configure your database
+config :simple_bank_api, SimpleBankApi.Repo,
+  url: System.get_env("DATABASE_URL"),
+  pool_size: 18

@@ -56,8 +56,23 @@ jobs:  # basic units of work in a run
       - store_test_results:  # upload junit test results for display in Test Summary
           # Read more: https://circleci.com/docs/2.0/collect-test-data/
           path: _build/test/lib/simple_bank_api # Replace with the name of your :app
+  deploy:
+    steps:
+      - checkout
+      - run:
+          name: Deploy to Heroku
+          command: |
+             docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+             docker build -t registry.heroku.com/$HEROKU_APP_NAME/web
+             docker push registry.heroku.com/$HEROKU_APP_NAME/web
 workflows:
   version: 2
   pipeline:
     jobs:
       - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only: release
